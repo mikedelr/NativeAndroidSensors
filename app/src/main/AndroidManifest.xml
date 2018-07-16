@@ -1,0 +1,51 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.michaeldelrosario.nativesensors">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Required to register a SyncStatusObserver to display a "syncing..." progress indicator. -->
+    <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--<uses-feature-->
+    <!--android:name="android.hardware.nfc"-->
+    <!--android:required="true" />-->
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.gyroscope"     android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.barometer"     android:required="false"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".NativeSensorsActivity">
+
+        </activity>
+
+        <service
+            android:name=".SensorServiceManager"
+            android:enabled="true"
+            android:process=":sensorservicemonitor"
+            />
+        <!-- Bootup Receiver -->
+        <receiver
+            android:name=".BootCompletedReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <!-- Check when package is placed on re-install -->
+        <receiver android:name="com.michaeldelrosario.nativesensors.OnPackageReplaced" >
+            <intent-filter android:priority="1000" >
+                <!--other actions I need-->
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

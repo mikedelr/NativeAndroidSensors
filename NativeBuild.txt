@@ -1,0 +1,1 @@
+javah -d jni -classpath C:\Android\android-sdk\platforms\android-25\android.jar;C:\Android\NativeSensors\app\build\intermediates\classes\debug com.michaeldelrosario.nativesensors.NativeSensorsJNI
